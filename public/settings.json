@@ -1,0 +1,35 @@
+{
+  "studioName": "Lavya photo studio",
+  "email": "rahulbirla4321@gamil.com",
+  "ownerName": "Rahul birla",
+  "time": "8:30am - 9:00pm",
+  "phone": "9300704610, 9074717172",
+  "address": "Housing board colony Pithampur, Dhar, M.P. 454775",
+  "socials": {
+    "facebook": "https://facebook.com",
+    "instagram": "https://instagram.com",
+    "whatsapp": "https://wa.me/919300704610"
+  },
+  "about": {
+    "headline": "Capturing Emotions Through The Lens",
+    "imageUrl": "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=800&auto=format&fit=crop",
+    "description": "Based in vibrant India, Lavya Studio has been documenting life's most precious occasions for over a decade. Our passion lies in seizing unscripted moments, true emotions, and timeless beauty.\n\nOwned by Rahul Birla, we specialize in wedding storytelling, candid portraiture, and dynamic event coverage. Our team believes that every client has a unique story, and our goal is to capture it visually with unmatched cinematic quality.",
+    "team": [
+      {
+        "name": "Rahul Birla",
+        "role": "Founder & Lead Photographer",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=256&auto=format&fit=crop"
+      },
+      {
+        "name": "Nilesh",
+        "role": "Senior Photo Editor",
+        "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=256&auto=format&fit=crop"
+      },
+      {
+        "name": "Ganesh",
+        "role": "Cinematographer",
+        "image": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=256&auto=format&fit=crop"
+      }
+    ]
+  }
+}

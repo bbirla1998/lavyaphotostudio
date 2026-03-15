@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Elegance Photo Studio</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .page-header {
+            padding: 150px 0 60px;
+            text-align: center;
+            background: linear-gradient(to bottom, var(--bg-color), var(--card-bg));
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            padding: 80px 0;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        @media(max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="/" class="nav-brand studio-name-display">Elegance Studio</a>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about.html" class="active">About</a></li>
+            <li><a href="/services.html">Services</a></li>
+            <li><a href="/gallery.html">Gallery</a></li>
+            <li><a href="/offers.html">Offers</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <h1 style="font-size: 3rem;">About <span class="gold-text">Us</span></h1>
+        </div>
+    </header>
+
+    <section class="container">
+        <div class="about-content">
+            <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=800&auto=format&fit=crop"
+                alt="Photographer" class="about-image">
+            <div class="about-text">
+                <h2>Capturing <span class="gold-text">Emotions</span> Through The Lens</h2>
+                <p>Based in vibrant India, <strong class="studio-name-display">Elegance Studio</strong> has been
+                    documenting life's most precious occasions for over a decade. Our passion lies in seizing unscripted
+                    moments, true emotions, and timeless beauty.</p>
+                <p>We specialize in wedding storytelling, candid portraiture, and dynamic event coverage. Our team
+                    believes that every client has a unique story, and our goal is to capture it visually with unmatched
+                    cinematic quality.</p>
+                <p>Let's make memories that last a lifetime.</p>
+                <div style="margin-top: 30px;">
+                    <a href="/gallery.html" class="btn">View Our Work</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Minimal Footer -->
+    <footer style="padding: 20px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
+        &copy; <span id="year"></span> <span class="studio-name-display"></span>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+
+</html>

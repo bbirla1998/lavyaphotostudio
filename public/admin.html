@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Lavya Photo Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --card-bg: #0A1128;
+            --text-main: #FFFFFF;
+            --accent-gold: #D4AF37;
+            --font-main: 'Outfit', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            padding: 50px 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .login-card h2 {
+            margin-bottom: 5px;
+            color: var(--accent-gold);
+            letter-spacing: 1px;
+        }
+
+        .login-card p {
+            color: #A0AAB2;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 6px;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--accent-gold);
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #bfa136;
+        }
+
+        #error-msg {
+            color: #ff4c4c;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 20px;
+            color: #A0AAB2;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .back-home:hover {
+            color: var(--accent-gold);
+        }
+
+        .back-home svg {
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+        <h2>STUDIO ADMIN</h2>
+        <p>Restricted Access Only</p>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <input type="text" id="username" class="form-control" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" class="form-control" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn" id="loginBtn">Login</button>
+            <div id="error-msg">Invalid credentials.</div>
+        </form>
+        <a href="/" class="back-home">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Home
+        </a>
+    </div>
+
+    <script>
+        // Check if already logged in
+        fetch('/api/auth/check')
+            .then(res => res.json())
+            .then(data => {
+                if (data.isAuthenticated) {
+                    window.location.href = '/admin_dashboard.html';
+                }
+            });
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('loginBtn');
+            const errorMsg = document.getElementById('error-msg');
+
+            btn.textContent = 'Authenticating...';
+            errorMsg.style.display = 'none';
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    window.location.href = '/admin_dashboard.html';
+                } else {
+                    errorMsg.textContent = data.error || 'Authentication failed.';
+                    errorMsg.style.display = 'block';
+                    btn.textContent = 'Login';
+                }
+            } catch (err) {
+                errorMsg.textContent = 'Network error. Try again.';
+                errorMsg.style.display = 'block';
+                btn.textContent = 'Login';
+            }
+        });
+    </script>
+</body>
+
+</html>

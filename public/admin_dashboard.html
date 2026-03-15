@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Lavya Admin</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            STUDIO ADMIN
+        </div>
+        <ul class="nav-menu">
+            <li><a class="nav-item active" data-target="dashboard-section">Dashboard Overview</a></li>
+            <li><a class="nav-item" data-target="gallery-section">Gallery Management</a></li>
+            <li><a class="nav-item" data-target="banner-section">Banner Management</a></li>
+            <li><a class="nav-item" data-target="offers-section">Offers & Packages</a></li>
+            <li><a class="nav-item" data-target="categories-section">Categories</a></li>
+            <li><a class="nav-item" data-target="about-section">About Us Management</a></li>
+            <li><a class="nav-item" data-target="settings-section">Global Settings</a></li>
+        </ul>
+        <div class="logout-btn">
+            <button id="logoutBtn">LOGOUT</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Dashboard Overview -->
+        <div id="dashboard-section" class="section active">
+            <h2>Welcome to Admin Dashboard</h2>
+            <div class="card">
+                <p>Select a category from the sidebar to manage your studio website content.</p>
+                <ul style="margin-top:20px; color: var(--text-muted); padding-left: 20px;">
+                    <li><strong>Gallery Management:</strong> Upload and delete portfolio images by category.</li>
+                    <li><strong>Banner Management:</strong> Manage the homepage slider images.</li>
+                    <li><strong>Offers & Packages:</strong> Add, edit, or delete studio pricing packages.</li>
+                    <li><strong>Global Settings:</strong> Update contact info and social media links.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Gallery Management -->
+        <div id="gallery-section" class="section">
+            <h2>Gallery Management</h2>
+
+            <div class="card">
+                <form id="galleryUploadForm" style="margin-top: 15px;">
+                    <div class="form-group">
+                        <label>Select Category</label>
+                        <select id="galleryCategory" class="form-control">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div style="border-right: 1px solid rgba(255,255,255,0.1); padding-right: 20px;">
+                            <h4 style="margin-bottom: 15px; color: var(--accent-gold);">Option 1: Upload File</h4>
+                            <div class="form-group">
+                                <label>Select File (Max 50MB)</label>
+                                <input type="file" id="galleryFile" class="form-control" accept="image/*,video/*">
+                            </div>
+                            <button type="submit" class="btn">Upload Image</button>
+                        </div>
+                        
+                        <div>
+                            <h4 style="margin-bottom: 15px; color: var(--accent-gold);">Option 2: Add by URL</h4>
+                            <div class="form-group">
+                                <label>Direct Image/Video URL</label>
+                                <input type="url" id="externalUrl" class="form-control" placeholder="https://example.com/photo.jpg">
+                            </div>
+                            <button type="button" class="btn" onclick="addExternalLink()">Add URL to Gallery</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Manage Existing Images</h3>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Filter by Category</label>
+                    <select id="galleryFilter" class="form-control" style="max-width: 200px;">
+                        <option value="all">All Categories</option>
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <!-- Image Grid -->
+                <div class="img-grid" id="adminGalleryGrid">
+                    <!-- Loaded via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Banner Management -->
+        <div id="banner-section" class="section">
+            <h2>Banner Management</h2>
+
+            <div class="card">
+                <h3>Upload Homepage Banner</h3>
+                <form id="bannerUploadForm" style="margin-top: 15px;">
+                    <div class="form-group">
+                        <label>Select Banner Image (1920x1080 recommended)</label>
+                        <input type="file" id="bannerFile" class="form-control" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn">Upload Banner</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Active Banners</h3>
+                <div class="img-grid" id="adminBannerGrid">
+                    <!-- Loaded via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Offers Management -->
+        <div id="offers-section" class="section">
+            <h2>Offers & Packages</h2>
+
+            <div class="card">
+                <h3 id="offerFormTitle">Add New Package</h3>
+                <form id="offerForm" style="margin-top: 15px;">
+                    <input type="hidden" id="offerId">
+                    <div class="form-group">
+                        <label>Package Title</label>
+                        <input type="text" id="offerTitle" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price Focus (e.g., $500 or Starts at $200)</label>
+                        <input type="text" id="offerPrice" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Image URL (Optional)</label>
+                        <input type="text" id="offerImage" class="form-control"
+                            placeholder="/uploads/gallery/wedding/example.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label>Description Details</label>
+                        <textarea id="offerDesc" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Save Package</button>
+                    <button type="button" class="btn" style="background:#444; color:white; margin-left:10px;"
+                        onclick="resetOfferForm()">Cancel Edit</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Existing Packages</h3>
+                <ul class="list-group" id="adminOffersList">
+                    <!-- Loaded via JS -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Categories Section -->
+        <div id="categories-section" class="section">
+            <h2>Manage Categories</h2>
+            <div class="card" style="max-width: 500px;">
+                <h3 style="margin-bottom: 15px;">Add New Category</h3>
+                <form id="categoryForm">
+                    <div class="form-group">
+                        <label>Category ID (lowercase, no spaces, e.g. "prewedding")</label>
+                        <input type="text" id="newCategoryId" class="form-control" required autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label>Category Display Name (e.g. "Pre-Wedding")</label>
+                        <input type="text" id="newCategoryLabel" class="form-control" required autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn">Add Category</button>
+                </form>
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom: 15px;">Existing Categories</h3>
+                <ul class="list-group" id="adminCategoriesList">
+                    <!-- Loaded via JS -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- About Us Management -->
+        <div id="about-section" class="section">
+            <h2>About Us Management</h2>
+            <div class="card">
+                <form id="aboutForm">
+                    <div class="form-group">
+                        <label>Headline</label>
+                        <input type="text" id="aboutHeadline" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Main Image URL</label>
+                        <input type="text" id="aboutImageUrl" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description (Use \n for new lines)</label>
+                        <textarea id="aboutDescription" class="form-control" rows="8" required></textarea>
+                    </div>
+
+                    <h3 style="margin: 30px 0 15px; color: var(--accent-gold);">Team Members</h3>
+                    <div id="team-members-container">
+                        <!-- Dynamically populated -->
+                    </div>
+                    <button type="button" class="btn" style="background:#444; margin-bottom: 20px;" onclick="addTeamMember()">+ Add Member</button>
+
+                    <div style="margin-top: 20px;">
+                        <button type="submit" class="btn">Save About Us Content</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Settings Management -->
+        <div id="settings-section" class="section">
+            <h2>Global Studio Settings</h2>
+
+            <div class="card">
+                <form id="settingsForm">
+                    <h3 style="margin-bottom: 20px; color: var(--accent-gold);">General Info</h3>
+                    <div class="form-group">
+                        <label>Studio Name</label>
+                        <input type="text" id="setStudioName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Email</label>
+                        <input type="email" id="setEmail" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Owner Name</label>
+                        <input type="text" id="setOwner" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Working Hours</label>
+                        <input type="text" id="setTime" class="form-control" required
+                            placeholder="e.g. 8:30am - 9:00pm">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Phone</label>
+                        <input type="text" id="setPhone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Physical Address</label>
+                        <textarea id="setAddress" class="form-control" rows="2" required></textarea>
+                    </div>
+
+                    <h3 style="margin: 30px 0 20px; color: var(--accent-gold);">Social Media Links</h3>
+                    <div class="form-group">
+                        <label>Facebook URL</label>
+                        <input type="url" id="setFb" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Instagram URL</label>
+                        <input type="url" id="setIg" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>WhatsApp URL (e.g. https://wa.me/91...)</label>
+                        <input type="url" id="setWa" class="form-control">
+                    </div>
+
+                    <button type="submit" class="btn" style="margin-top: 20px;">Save All Settings</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Action Successful</div>
+
+    <script src="/js/admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+[
+    {
+        "id": "1",
+        "title": "Wedding Package Standard",
+        "description": "Full day coverage with 2 photographers. Includes HD photobook.",
+        "price": "$500",
+        "image": "/images/offer-wedding.jpg"
+    },
+    {
+        "id": "2",
+        "title": "Birthday Special",
+        "description": "3 hours coverage, unlimited printed photos.",
+        "price": "$150",
+        "image": "/images/offer-birthday.jpg"
+    }
+]

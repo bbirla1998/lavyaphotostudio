@@ -1,0 +1,18 @@
+[
+  {
+    "id": "wedding",
+    "label": "Wedding"
+  },
+  {
+    "id": "birthday",
+    "label": "Birthday"
+  },
+  {
+    "id": "events",
+    "label": "Events"
+  },
+  {
+    "id": "prewedding",
+    "label": "Pre-Wedding"
+  }
+]

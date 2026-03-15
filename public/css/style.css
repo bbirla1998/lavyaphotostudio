@@ -1,0 +1,454 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Default Dark Theme */
+  --bg-color: #050505;
+  /* Black background */
+  --card-bg: #0A1128;
+  /* Navy cards */
+  --text-main: #FFFFFF;
+  /* White text for contrast */
+  --text-muted: #A0AAB2;
+  /* Muted text */
+  --accent-gold: #D4AF37;
+  /* Gold accents */
+  --btn-bg: #FFFFFF;
+  /* White buttons */
+  --btn-text: #000000;
+  /* Black text on buttons */
+  --btn-hover: #E2E2E2;
+  /* Light grey on hover */
+  --nav-bg: rgba(5, 5, 5, 0.9);
+  --footer-bg: #020202;
+
+  --font-main: 'Outfit', sans-serif;
+  --transition-speed: 0.3s;
+  --nav-height: 80px;
+}
+
+/* Light Theme Variables */
+[data-theme="light"] {
+  --bg-color: #F8F9FA;
+  --card-bg: #FFFFFF;
+  --text-main: #1A1A1A;
+  --text-muted: #6C757D;
+  --accent-gold: #B8860B;
+  --btn-bg: #1A1A1A;
+  --btn-text: #FFFFFF;
+  --btn-hover: #333333;
+  --nav-bg: rgba(255, 255, 255, 0.95);
+  --footer-bg: #EEEEEE;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color var(--transition-speed) ease;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.gold-text {
+  color: var(--accent-gold);
+}
+
+/* Layout Utilities */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section {
+  padding: 80px 0;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 12px 28px;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  font-weight: 600;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn:hover {
+  background-color: var(--btn-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+}
+
+.btn-gold {
+  background-color: var(--accent-gold);
+  color: var(--bg-color);
+}
+
+.btn-gold:hover {
+  background-color: #bfa136;
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}
+
+/* Navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: var(--nav-height);
+  background-color: var(--nav-bg);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center; /* Center the internal content group */
+  align-items: center;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0 5%;
+}
+
+.nav-container {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  justify-content: center; /* Centers the links in the middle */
+  align-items: center;
+  position: relative; /* For absolute logo positioning */
+  padding: 0 20px;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: absolute;
+  left: 20px;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.admin-brand-icon {
+  color: var(--accent-gold);
+  display: flex !important;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.admin-brand-icon:hover {
+  transform: scale(1.1);
+}
+
+.admin-icon-wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.admin-icon-wrapper svg {
+  display: block;
+}
+
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-gold);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  padding: 0;
+  outline: none;
+}
+
+.theme-toggle:hover {
+  background: var(--accent-gold);
+  color: #000;
+}
+
+/* Removed previous nav-brand flex logic */
+
+.nav-links {
+  display: flex;
+  gap: 15px; /* Reduced gap further */
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--accent-gold);
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: var(--text-main);
+  transition: all var(--transition-speed) ease;
+}
+
+/* Hero Banner */
+.hero {
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
+  transition: opacity 1s ease-in-out;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8));
+  z-index: -1;
+}
+
+.hero-content {
+  max-width: 800px;
+  padding: 20px;
+  animation: fadeIn 1s ease forwards;
+}
+
+.hero-title {
+  font-size: 4rem;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+}
+
+/* Cards (Offers & Services) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform var(--transition-speed) ease;
+  border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  border-color: var(--accent-gold);
+}
+
+.card-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 25px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+.card-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+/* Footer */
+footer {
+  background-color: var(--footer-bg);
+  padding: 60px 0 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.footer-col h4 {
+  color: var(--accent-gold);
+  margin-bottom: 25px;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.footer-links a {
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent-gold);
+  padding-left: 5px;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 15px;
+  border-radius: 20px;
+  background-color: var(--card-bg);
+  transition: all var(--transition-speed);
+}
+
+.social-links a:hover {
+  background-color: var(--accent-gold);
+  color: var(--bg-color);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Utilities meant to be populated by JS */
+#studio-name-display,
+#studio-phone-display,
+#studio-email-display,
+#studio-address-display {
+  display: inline;
+}
+
+@media (max-width: 1100px) {
+  .admin-icon-wrapper {
+    display: none; /* Hide camera icon on small screens as requested */
+  }
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    width: 100%;
+    background-color: var(--card-bg);
+    flex-direction: column;
+    padding: 20px 0;
+    text-align: center;
+    clip-path: circle(0% at 50% -20%);
+    transition: clip-path 0.5s ease;
+    gap: 15px;
+  }
+
+  .nav-links.active {
+    clip-path: circle(150% at 50% -20%);
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+}
