@@ -64,13 +64,23 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/admin.html';
     });
 
-    // --- Helper: Toast Notification ---
+    // --- Helper: Toast Notification (Bootstrap 5) ---
     window.showToast = function (msg, isError = false) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.className = 'toast show';
-        if (isError) toast.classList.add('error');
-        setTimeout(() => toast.classList.remove('show'), 3000);
+        const toastEl = document.getElementById('liveToast');
+        const toastText = document.getElementById('toastText');
+        
+        toastText.textContent = msg;
+        
+        if (isError) {
+            toastEl.classList.remove('bg-success');
+            toastEl.classList.add('bg-danger');
+        } else {
+            toastEl.classList.remove('bg-danger');
+            toastEl.classList.add('bg-success');
+        }
+        
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
     }
 
 
@@ -111,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadGalleryAdmin() {
         const category = galleryFilter.value;
         const grid = document.getElementById('adminGalleryGrid');
-        grid.innerHTML = '<p>Loading...</p>';
+        grid.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-warning"></div></div>';
 
         try {
             const res = await fetch('/api/upload/gallery');
@@ -120,25 +130,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
             grid.innerHTML = '';
             if (images.length === 0) {
-                grid.innerHTML = '<p>No images in this category.</p>';
+                grid.innerHTML = '<div class="col-12 text-center py-5 text-muted">No images in this category.</div>';
             } else {
                 images.forEach(url => {
-                    const filename = url.split('/').pop();
-                    const card = document.createElement('div');
-                    card.className = 'img-card';
+                    const col = document.createElement('div');
+                    col.className = 'col-lg-3 col-md-4 col-sm-6';
+
                     const isVideo = url.match(/\.(mp4|webm|ogg)$/i) || url.toLowerCase().includes('video');
                     const mediaTag = isVideo
-                        ? `<video src="${url}" muted autoplay loop style="width:100%; height:100%; object-fit:cover; border-radius:8px;"></video>`
+                        ? `<video src="${url}" muted autoplay loop style="width:100%; height:180px; object-fit:cover;"></video>`
                         : `<img src="${url}" alt="Gallery img">`;
-                    card.innerHTML = `
-                        ${mediaTag}
-                        <button class="delete-btn" onclick="deleteGalleryImage('${category}', '${url}')">&times;</button>
+                    
+                    col.innerHTML = `
+                        <div class="img-card">
+                            ${mediaTag}
+                            <button class="delete-btn" onclick="deleteGalleryImage('${category}', '${url}')">&times;</button>
+                        </div>
                     `;
-                    grid.appendChild(card);
+                    grid.appendChild(col);
                 });
             }
         } catch (err) {
-            grid.innerHTML = '<p>Error loading gallery.</p>';
+            grid.innerHTML = '<div class="col-12 text-center py-5 text-danger">Error loading gallery.</div>';
         }
     }
 
@@ -228,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadBannersAdmin() {
         const grid = document.getElementById('adminBannerGrid');
-        grid.innerHTML = '<p>Loading...</p>';
+        grid.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-warning"></div></div>';
 
         try {
             const res = await fetch('/api/upload/banner');
@@ -236,21 +249,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             grid.innerHTML = '';
             if (!images || images.length === 0) {
-                grid.innerHTML = '<p>No banners found.</p>';
+                grid.innerHTML = '<div class="col-12 text-center py-5 text-muted">No banners found.</div>';
             } else {
                 images.forEach(url => {
                     const filename = url.split('/').pop();
-                    const card = document.createElement('div');
-                    card.className = 'img-card';
-                    card.innerHTML = `
-                        <img src="${url}" alt="Banner img">
-                        <button class="delete-btn" onclick="deleteBanner('${filename}')">&times;</button>
+                    const col = document.createElement('div');
+                    col.className = 'col-lg-4 col-md-6';
+                    
+                    col.innerHTML = `
+                        <div class="img-card">
+                            <img src="${url}" alt="Banner img">
+                            <button class="delete-btn" onclick="deleteBanner('${filename}')">&times;</button>
+                        </div>
                     `;
-                    grid.appendChild(card);
+                    grid.appendChild(col);
                 });
             }
         } catch (err) {
-            grid.innerHTML = '<p>Error loading banners.</p>';
+            grid.innerHTML = '<div class="col-12 text-center py-5 text-danger">Error loading banners.</div>';
         }
     }
 
@@ -506,26 +522,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addTeamMember = function (member = { name: '', role: '', image: '' }) {
         const div = document.createElement('div');
-        div.className = 'team-member-edit card';
-        div.style.background = 'rgba(255,255,255,0.03)';
-        div.style.marginBottom = '15px';
-        div.style.padding = '15px';
+        div.className = 'col-md-6 team-member-edit';
         div.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <h4 style="margin:0;">Team Member</h4>
-                <button type="button" class="btn btn-danger" style="padding:5px 10px; font-size:0.8rem;" onclick="this.parentElement.parentElement.remove()">Remove</button>
-            </div>
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" class="form-control member-name" value="${member.name}" required>
-            </div>
-            <div class="form-group">
-                <label>Role</label>
-                <input type="text" class="form-control member-role" value="${member.role}" required>
-            </div>
-            <div class="form-group">
-                <label>Image URL</label>
-                <input type="text" class="form-control member-image" value="${member.image}" required>
+            <div class="team-member-input h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0 gold-text">Team Member</h5>
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="this.closest('.team-member-edit').remove()">Remove</button>
+                </div>
+                <div class="mb-3 text-start">
+                    <label class="form-label small text-muted text-uppercase fw-bold">Name</label>
+                    <input type="text" class="form-control member-name" value="${member.name}" required>
+                </div>
+                <div class="mb-3 text-start">
+                    <label class="form-label small text-muted text-uppercase fw-bold">Role</label>
+                    <input type="text" class="form-control member-role" value="${member.role}" required>
+                </div>
+                <div class="mb-0 text-start">
+                    <label class="form-label small text-muted text-uppercase fw-bold">Image URL</label>
+                    <input type="text" class="form-control member-image" value="${member.image}" required>
+                </div>
             </div>
         `;
         teamContainer.appendChild(div);
@@ -616,7 +631,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 studioName: document.getElementById('setStudioName').value,
                 email: document.getElementById('setEmail').value,
                 ownerName: document.getElementById('setOwner').value,
-                time: document.getElementById('setTime').value,
                 phone: document.getElementById('setPhone').value,
                 address: document.getElementById('setAddress').value,
                 socials: {

@@ -5,274 +5,500 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Lavya Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/admin.css">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+        }
+
+        body {
+            overflow-x: hidden;
+            background-color: var(--bg-color);
+        }
+
+        /* Responsive Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--card-bg);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+            overflow-y: auto; /* Enable scroll if content is too long */
+        }
+
+        .sidebar .close-sidebar {
+            display: none; /* Hidden by default on desktop */
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--accent-gold);
+            font-size: 2rem;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            padding: 40px;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 2000;
+            display: none;
+            width: 50px;
+            height: 50px;
+            padding: 0;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-gold);
+            border-radius: 12px;
+            border: none;
+            color: black;
+        }
+
+        @media (max-width: 992px) {
+            .toggle-btn {
+                display: flex;
+            }
+            .sidebar {
+                left: calc(-1 * var(--sidebar-width));
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 80px 20px 20px; /* More padding-top on mobile */
+            }
+            .sidebar.active ~ .toggle-btn {
+                display: none; /* Hide toggle button when sidebar is open */
+            }
+
+            .sidebar .close-sidebar {
+                display: block; /* Show on mobile when sidebar is active */
+            }
+        }
+
+        .nav-item {
+            cursor: pointer;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none !important;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--accent-gold);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Removed redundant toggle-btn styles */
+        @media (max-width: 992px) {
+            .toggle-btn {
+                display: flex;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
     <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            STUDIO ADMIN
+    <div class="sidebar d-flex flex-column p-4">
+        <button class="close-sidebar" id="closeSidebar">&times;</button>
+        <div class="sidebar-header mb-5 text-center">
+            <div class="admin-logo-wrapper mb-3">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+            </div>
+            <h4 class="fw-bold gold-text mb-0 text-uppercase letter-spacing-2">Lavya Admin</h4>
         </div>
-        <ul class="nav-menu">
-            <li><a class="nav-item active" data-target="dashboard-section">Dashboard Overview</a></li>
-            <li><a class="nav-item" data-target="gallery-section">Gallery Management</a></li>
-            <li><a class="nav-item" data-target="banner-section">Banner Management</a></li>
-            <li><a class="nav-item" data-target="offers-section">Offers & Packages</a></li>
-            <li><a class="nav-item" data-target="categories-section">Categories</a></li>
-            <li><a class="nav-item" data-target="about-section">About Us Management</a></li>
-            <li><a class="nav-item" data-target="settings-section">Global Settings</a></li>
-        </ul>
-        <div class="logout-btn">
-            <button id="logoutBtn">LOGOUT</button>
+        
+        <div class="nav-menu flex-grow-1">
+            <a class="nav-item active" data-target="dashboard-section">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Dashboard Overview</span>
+            </a>
+            <a class="nav-item" data-target="gallery-section">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <span>Gallery Management</span>
+            </a>
+            <a class="nav-item" data-target="banner-section">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                <span>Banner Management</span>
+            </a>
+            <a class="nav-item" data-target="offers-section">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                <span>Offers & Packages</span>
+            </a>
+            <a class="nav-item" data-target="categories-section">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                <span>Categories</span>
+            </a>
+            <a class="nav-item" data-target="about-section">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>About Us Management</span>
+            </a>
+            <a class="nav-item" data-target="settings-section">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 1 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span>Global Settings</span>
+            </a>
+        </div>
+
+        <div class="logout-btn mt-auto">
+            <button id="logoutBtn" class="btn btn-outline-danger w-100 fw-bold">LOGOUT</button>
         </div>
     </div>
+
+    <button class="btn btn-gold toggle-btn shadow" id="sidebarToggle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
 
     <!-- Main Content -->
     <div class="main-content">
-
-        <!-- Dashboard Overview -->
-        <div id="dashboard-section" class="section active">
-            <h2>Welcome to Admin Dashboard</h2>
-            <div class="card">
-                <p>Select a category from the sidebar to manage your studio website content.</p>
-                <ul style="margin-top:20px; color: var(--text-muted); padding-left: 20px;">
-                    <li><strong>Gallery Management:</strong> Upload and delete portfolio images by category.</li>
-                    <li><strong>Banner Management:</strong> Manage the homepage slider images.</li>
-                    <li><strong>Offers & Packages:</strong> Add, edit, or delete studio pricing packages.</li>
-                    <li><strong>Global Settings:</strong> Update contact info and social media links.</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Gallery Management -->
-        <div id="gallery-section" class="section">
-            <h2>Gallery Management</h2>
-
-            <div class="card">
-                <form id="galleryUploadForm" style="margin-top: 15px;">
-                    <div class="form-group">
-                        <label>Select Category</label>
-                        <select id="galleryCategory" class="form-control">
-                            <!-- Populated by JS -->
-                        </select>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div style="border-right: 1px solid rgba(255,255,255,0.1); padding-right: 20px;">
-                            <h4 style="margin-bottom: 15px; color: var(--accent-gold);">Option 1: Upload File</h4>
-                            <div class="form-group">
-                                <label>Select File (Max 50MB)</label>
-                                <input type="file" id="galleryFile" class="form-control" accept="image/*,video/*">
+        
+        <div class="container-fluid">
+            
+            <!-- Dashboard Overview -->
+            <div id="dashboard-section" class="section active">
+                <h2 class="fw-bold mb-4">Welcome back, <span class="gold-text">Admin</span></h2>
+                <div class="card p-4">
+                    <p class="lead mb-4">Select a category from the sidebar to manage your studio website content.</p>
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="p-3 rounded bg-dark border border-secondary">
+                                <h6 class="text-muted small text-uppercase fw-bold mb-2">Gallery</h6>
+                                <p class="mb-0 small">Upload and delete images.</p>
                             </div>
-                            <button type="submit" class="btn">Upload Image</button>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="p-3 rounded bg-dark border border-secondary">
+                                <h6 class="text-muted small text-uppercase fw-bold mb-2">Banners</h6>
+                                <p class="mb-0 small">Manage homepage slider.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="p-3 rounded bg-dark border border-secondary">
+                                <h6 class="text-muted small text-uppercase fw-bold mb-2">Offers</h6>
+                                <p class="mb-0 small">Control pricing packages.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="p-3 rounded bg-dark border border-secondary">
+                                <h6 class="text-muted small text-uppercase fw-bold mb-2">Settings</h6>
+                                <p class="mb-0 small">Update contact info.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Management -->
+            <div id="gallery-section" class="section">
+                <h2 class="fw-bold mb-4">Gallery <span class="gold-text">Management</span></h2>
+                <div class="card p-4">
+                    <form id="galleryUploadForm" class="row g-4">
+                        <div class="col-12">
+                            <label class="form-label text-muted small text-uppercase fw-bold">Select Category</label>
+                            <select id="galleryCategory" class="form-select"></select>
                         </div>
                         
-                        <div>
-                            <h4 style="margin-bottom: 15px; color: var(--accent-gold);">Option 2: Add by URL</h4>
-                            <div class="form-group">
-                                <label>Direct Image/Video URL</label>
-                                <input type="url" id="externalUrl" class="form-control" placeholder="https://example.com/photo.jpg">
+                        <div class="col-lg-6">
+                            <div class="p-4 rounded bg-dark border border-secondary h-100">
+                                <h4 class="fw-bold mb-3 gold-text">Upload File</h4>
+                                <div class="mb-3">
+                                    <label class="form-label small">Select File (Max 50MB)</label>
+                                    <input type="file" id="galleryFile" class="form-control" accept="image/*,video/*">
+                                </div>
+                                <button type="submit" class="btn btn-gold w-100">Upload Image</button>
                             </div>
-                            <button type="button" class="btn" onclick="addExternalLink()">Add URL to Gallery</button>
+                        </div>
+                        
+                        <div class="col-lg-6">
+                            <div class="p-4 rounded bg-dark border border-secondary h-100">
+                                <h4 class="fw-bold mb-3 gold-text">Add by URL</h4>
+                                <div class="mb-3">
+                                    <label class="form-label small">Direct Image/Video URL</label>
+                                    <input type="url" id="externalUrl" class="form-control" placeholder="https://example.com/photo.jpg">
+                                </div>
+                                <button type="button" class="btn btn-outline-gold w-100" onclick="addExternalLink()">Add URL to Gallery</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                        <h3 class="fw-bold mb-0">Manage Existing Images</h3>
+                        <div style="min-width: 200px;">
+                            <select id="galleryFilter" class="form-select">
+                                <option value="all">All Categories</option>
+                            </select>
                         </div>
                     </div>
-                </form>
-            </div>
-
-            <div class="card">
-                <h3>Manage Existing Images</h3>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label>Filter by Category</label>
-                    <select id="galleryFilter" class="form-control" style="max-width: 200px;">
-                        <option value="all">All Categories</option>
-                        <!-- Populated by JS -->
-                    </select>
-                </div>
-                <!-- Image Grid -->
-                <div class="img-grid" id="adminGalleryGrid">
-                    <!-- Loaded via JS -->
+                    <div class="img-grid row g-3" id="adminGalleryGrid"></div>
                 </div>
             </div>
-        </div>
 
-        <!-- Banner Management -->
-        <div id="banner-section" class="section">
-            <h2>Banner Management</h2>
+            <!-- Banner Management -->
+            <div id="banner-section" class="section">
+                <h2 class="fw-bold mb-4">Banner <span class="gold-text">Management</span></h2>
+                <div class="card p-4">
+                    <h3 class="fw-bold mb-4">Upload Homepage Banner</h3>
+                    <form id="bannerUploadForm" class="row g-3">
+                        <div class="col-md-9">
+                            <input type="file" id="bannerFile" class="form-control" accept="image/*" required>
+                            <div class="form-text text-muted small mt-2">Recommended size: 1920x1080px</div>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-gold w-100">Upload</button>
+                        </div>
+                    </form>
+                </div>
 
-            <div class="card">
-                <h3>Upload Homepage Banner</h3>
-                <form id="bannerUploadForm" style="margin-top: 15px;">
-                    <div class="form-group">
-                        <label>Select Banner Image (1920x1080 recommended)</label>
-                        <input type="file" id="bannerFile" class="form-control" accept="image/*" required>
-                    </div>
-                    <button type="submit" class="btn">Upload Banner</button>
-                </form>
-            </div>
-
-            <div class="card">
-                <h3>Active Banners</h3>
-                <div class="img-grid" id="adminBannerGrid">
-                    <!-- Loaded via JS -->
+                <div class="card p-4">
+                    <h3 class="fw-bold mb-4">Active Banners</h3>
+                    <div class="img-grid row g-3" id="adminBannerGrid"></div>
                 </div>
             </div>
+
+            <!-- Offers Management -->
+            <div id="offers-section" class="section">
+                <h2 class="fw-bold mb-4">Offers & <span class="gold-text">Packages</span></h2>
+                <div class="card p-4">
+                    <h3 id="offerFormTitle" class="fw-bold mb-4">Add New Package</h3>
+                    <form id="offerForm" class="row g-3">
+                        <input type="hidden" id="offerId">
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small text-uppercase fw-bold">Package Title</label>
+                            <input type="text" id="offerTitle" class="form-control" required placeholder="Wedding Deluxe">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small text-uppercase fw-bold">Price Focus</label>
+                            <input type="text" id="offerPrice" class="form-control" required placeholder="Starts at ₹11,000">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-muted small text-uppercase fw-bold">Image URL (Optional)</label>
+                            <input type="text" id="offerImage" class="form-control" placeholder="/uploads/gallery/wedding/sample.jpg">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-muted small text-uppercase fw-bold">Description Details</label>
+                            <textarea id="offerDesc" class="form-control" rows="4" required placeholder="Enter package details..."></textarea>
+                        </div>
+                        <div class="col-12 d-flex gap-2">
+                            <button type="submit" class="btn btn-gold px-5">Save Package</button>
+                            <button type="button" class="btn btn-secondary px-4" onclick="resetOfferForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card p-4">
+                    <h3 class="fw-bold mb-4">Existing Packages</h3>
+                    <ul class="list-group list-group-flush" id="adminOffersList"></ul>
+                </div>
+            </div>
+
+            <!-- Categories Section -->
+            <div id="categories-section" class="section">
+                <h2 class="fw-bold mb-4">Manage <span class="gold-text">Categories</span></h2>
+                <div class="row g-4">
+                    <div class="col-lg-5">
+                        <div class="card p-4">
+                            <h3 class="fw-bold mb-4">Add New Category</h3>
+                            <form id="categoryForm" class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label text-muted small text-uppercase fw-bold">Category ID</label>
+                                    <input type="text" id="newCategoryId" class="form-control" required placeholder="e.g. prewedding">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label text-muted small text-uppercase fw-bold">Display Name</label>
+                                    <input type="text" id="newCategoryLabel" class="form-control" required placeholder="e.g. Pre-Wedding">
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-gold w-100">Add Category</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="card p-4">
+                            <h3 class="fw-bold mb-4">Existing Categories</h3>
+                            <ul class="list-group list-group-flush" id="adminCategoriesList"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Us Management -->
+            <div id="about-section" class="section">
+                <h2 class="fw-bold mb-4">About Us <span class="gold-text">Management</span></h2>
+                <div class="card p-4">
+                    <form id="aboutForm">
+                        <div class="row g-4">
+                            <div class="col-md-6 text-start">
+                                <label class="form-label text-muted small text-uppercase fw-bold">Headline</label>
+                                <input type="text" id="aboutHeadline" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 text-start">
+                                <label class="form-label text-muted small text-uppercase fw-bold">Main Image URL</label>
+                                <input type="text" id="aboutImageUrl" class="form-control" required>
+                            </div>
+                            <div class="col-12 text-start">
+                                <label class="form-label text-muted small text-uppercase fw-bold">Description</label>
+                                <textarea id="aboutDescription" class="form-control" rows="8" required></textarea>
+                                <div class="form-text text-muted small mt-2">Use \n for new lines.</div>
+                            </div>
+                            <div class="col-12">
+                                <h4 class="fw-bold mt-4 gold-text border-bottom border-secondary pb-3">Team Members</h4>
+                                <div id="team-members-container" class="row g-3 mt-2"></div>
+                                <button type="button" class="btn btn-outline-secondary mt-3" onclick="addTeamMember()">+ Add Member</button>
+                            </div>
+                            <div class="col-12 mt-5">
+                                <button type="submit" class="btn btn-gold px-5">Save About Us Content</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Settings Management -->
+            <div id="settings-section" class="section">
+                <h2 class="fw-bold mb-4">Global Studio <span class="gold-text">Settings</span></h2>
+                <div class="card p-4">
+                    <form id="settingsForm">
+                        <div class="row g-4">
+                            <div class="col-12"><h4 class="fw-bold gold-text mb-2">General Information</h4></div>
+                            <div class="col-md-6 text-start">
+                                <label class="form-label text-muted small text-uppercase fw-bold">Studio Name</label>
+                                <input type="text" id="setStudioName" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 text-start">
+                                <label class="form-label text-muted small text-uppercase fw-bold">Contact Email</label>
+                                <input type="email" id="setEmail" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 text-start">
+                                <label class="form-label text-muted small text-uppercase fw-bold">Owner Name</label>
+                                <input type="text" id="setOwner" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 text-start">
+                                <label class="form-label text-muted small text-uppercase fw-bold">Studio Hours (Time)</label>
+                                <input type="text" id="setTime" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 text-start">
+                                <label class="form-label text-muted small text-uppercase fw-bold">Phone</label>
+                                <input type="text" id="setPhone" class="form-control" required>
+                            </div>
+                            <div class="col-md-12 text-start">
+                                <label class="form-label text-muted small text-uppercase fw-bold">Physical Address</label>
+                                <textarea id="setAddress" class="form-control" rows="2" required></textarea>
+                            </div>
+                            
+                            <div class="col-12 mt-5"><h4 class="fw-bold gold-text mb-2">Social Media & Links</h4></div>
+                            <div class="col-md-4 text-start">
+                                <label class="form-label text-muted small text-uppercase fw-bold">Facebook URL</label>
+                                <input type="url" id="setFb" class="form-control">
+                            </div>
+                            <div class="col-md-4 text-start">
+                                <label class="form-label text-muted small text-uppercase fw-bold">Instagram URL</label>
+                                <input type="url" id="setIg" class="form-control">
+                            </div>
+                            <div class="col-md-4 text-start">
+                                <label class="form-label text-muted small text-uppercase fw-bold">WhatsApp URL</label>
+                                <input type="url" id="setWa" class="form-control">
+                            </div>
+                            
+                            <div class="col-12 mt-5">
+                                <button type="submit" class="btn btn-gold px-5 btn-lg">Save All Settings</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
-
-        <!-- Offers Management -->
-        <div id="offers-section" class="section">
-            <h2>Offers & Packages</h2>
-
-            <div class="card">
-                <h3 id="offerFormTitle">Add New Package</h3>
-                <form id="offerForm" style="margin-top: 15px;">
-                    <input type="hidden" id="offerId">
-                    <div class="form-group">
-                        <label>Package Title</label>
-                        <input type="text" id="offerTitle" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Price Focus (e.g., $500 or Starts at $200)</label>
-                        <input type="text" id="offerPrice" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Image URL (Optional)</label>
-                        <input type="text" id="offerImage" class="form-control"
-                            placeholder="/uploads/gallery/wedding/example.jpg">
-                    </div>
-                    <div class="form-group">
-                        <label>Description Details</label>
-                        <textarea id="offerDesc" class="form-control" rows="4" required></textarea>
-                    </div>
-                    <button type="submit" class="btn">Save Package</button>
-                    <button type="button" class="btn" style="background:#444; color:white; margin-left:10px;"
-                        onclick="resetOfferForm()">Cancel Edit</button>
-                </form>
-            </div>
-
-            <div class="card">
-                <h3>Existing Packages</h3>
-                <ul class="list-group" id="adminOffersList">
-                    <!-- Loaded via JS -->
-                </ul>
-            </div>
-        </div>
-
-        <!-- Categories Section -->
-        <div id="categories-section" class="section">
-            <h2>Manage Categories</h2>
-            <div class="card" style="max-width: 500px;">
-                <h3 style="margin-bottom: 15px;">Add New Category</h3>
-                <form id="categoryForm">
-                    <div class="form-group">
-                        <label>Category ID (lowercase, no spaces, e.g. "prewedding")</label>
-                        <input type="text" id="newCategoryId" class="form-control" required autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label>Category Display Name (e.g. "Pre-Wedding")</label>
-                        <input type="text" id="newCategoryLabel" class="form-control" required autocomplete="off">
-                    </div>
-                    <button type="submit" class="btn">Add Category</button>
-                </form>
-            </div>
-            <div class="card">
-                <h3 style="margin-bottom: 15px;">Existing Categories</h3>
-                <ul class="list-group" id="adminCategoriesList">
-                    <!-- Loaded via JS -->
-                </ul>
-            </div>
-        </div>
-
-        <!-- About Us Management -->
-        <div id="about-section" class="section">
-            <h2>About Us Management</h2>
-            <div class="card">
-                <form id="aboutForm">
-                    <div class="form-group">
-                        <label>Headline</label>
-                        <input type="text" id="aboutHeadline" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Main Image URL</label>
-                        <input type="text" id="aboutImageUrl" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Description (Use \n for new lines)</label>
-                        <textarea id="aboutDescription" class="form-control" rows="8" required></textarea>
-                    </div>
-
-                    <h3 style="margin: 30px 0 15px; color: var(--accent-gold);">Team Members</h3>
-                    <div id="team-members-container">
-                        <!-- Dynamically populated -->
-                    </div>
-                    <button type="button" class="btn" style="background:#444; margin-bottom: 20px;" onclick="addTeamMember()">+ Add Member</button>
-
-                    <div style="margin-top: 20px;">
-                        <button type="submit" class="btn">Save About Us Content</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Settings Management -->
-        <div id="settings-section" class="section">
-            <h2>Global Studio Settings</h2>
-
-            <div class="card">
-                <form id="settingsForm">
-                    <h3 style="margin-bottom: 20px; color: var(--accent-gold);">General Info</h3>
-                    <div class="form-group">
-                        <label>Studio Name</label>
-                        <input type="text" id="setStudioName" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Contact Email</label>
-                        <input type="email" id="setEmail" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Owner Name</label>
-                        <input type="text" id="setOwner" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Working Hours</label>
-                        <input type="text" id="setTime" class="form-control" required
-                            placeholder="e.g. 8:30am - 9:00pm">
-                    </div>
-                    <div class="form-group">
-                        <label>Contact Phone</label>
-                        <input type="text" id="setPhone" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Physical Address</label>
-                        <textarea id="setAddress" class="form-control" rows="2" required></textarea>
-                    </div>
-
-                    <h3 style="margin: 30px 0 20px; color: var(--accent-gold);">Social Media Links</h3>
-                    <div class="form-group">
-                        <label>Facebook URL</label>
-                        <input type="url" id="setFb" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Instagram URL</label>
-                        <input type="url" id="setIg" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>WhatsApp URL (e.g. https://wa.me/91...)</label>
-                        <input type="url" id="setWa" class="form-control">
-                    </div>
-
-                    <button type="submit" class="btn" style="margin-top: 20px;">Save All Settings</button>
-                </form>
-            </div>
-        </div>
-
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="toast">Action Successful</div>
+    <div id="toast" class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastText">Action Successful</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/admin.js"></script>
+    <script>
+        // Sidebar Toggling for Mobile
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const closeSidebar = document.getElementById('closeSidebar');
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.add('active');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
+
+        // Close sidebar when clicking a nav item on mobile
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 992) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

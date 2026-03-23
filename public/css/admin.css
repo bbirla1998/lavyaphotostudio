@@ -1,202 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+/* Dashboard specific refinements */
 
-:root {
-    --bg-color: #050505;
-    --sidebar-bg: #0A1128;
-    --card-bg: #111;
-    --text-main: #FFFFFF;
-    --text-muted: #A0AAB2;
-    --accent-gold: #D4AF37;
-    --border-color: rgba(255, 255, 255, 0.1);
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Outfit', sans-serif;
-}
-
-body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    display: flex;
-    min-height: 100vh;
-}
-
-/* Sidebar */
-.sidebar {
-    width: 260px;
-    background-color: var(--sidebar-bg);
-    border-right: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    height: 100vh;
-}
-
-.sidebar-header {
-    padding: 30px 20px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--accent-gold);
-    border-bottom: 1px solid var(--border-color);
-    text-align: center;
-    letter-spacing: 2px;
-}
-
-.nav-menu {
-    flex-grow: 1;
-    padding: 20px 0;
-    list-style: none;
-}
-
-.nav-item {
-    display: block;
-    padding: 15px 20px;
-    color: var(--text-muted);
-    text-decoration: none;
-    cursor: pointer;
-    transition: 0.3s;
-    border-left: 3px solid transparent;
-}
-
-.nav-item:hover,
-.nav-item.active {
-    background-color: rgba(212, 175, 55, 0.1);
-    color: var(--accent-gold);
-    border-left-color: var(--accent-gold);
-}
-
-.logout-btn {
-    padding: 20px;
-    text-align: center;
-    border-top: 1px solid var(--border-color);
-}
-
-.logout-btn button {
-    width: 100%;
-    background: transparent;
-    color: #ff4c4c;
-    border: 1px solid #ff4c4c;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.logout-btn button:hover {
-    background: #ff4c4c;
-    color: white;
-}
-
-/* Main Content */
-.main-content {
-    margin-left: 260px;
-    flex-grow: 1;
-    padding: 40px;
-}
-
-.section {
-    display: none;
-}
-
-.section.active {
-    display: block;
-    animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-h2 {
-    font-size: 2rem;
-    margin-bottom: 30px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 15px;
-}
-
-/* Forms & Cards */
-.card {
-    background-color: var(--card-bg);
-    padding: 25px;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    margin-bottom: 30px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--text-muted);
-}
-
-.form-control {
-    width: 100%;
-    padding: 12px;
+/* Team Member form group styling */
+.team-member-input {
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-color);
-    color: white;
-    border-radius: 4px;
-    font-family: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
 }
 
-.form-control:focus {
-    outline: none;
-    border-color: var(--accent-gold);
-}
-
-select.form-control option {
-    background-color: var(--sidebar-bg);
-    color: var(--text-main);
-}
-
-.btn {
-    padding: 10px 20px;
-    background-color: var(--accent-gold);
-    color: black;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.btn-danger {
-    background-color: #ff4c4c;
-    color: white;
-}
-
-/* Grids */
-.img-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-}
-
+/* Image Grid Styling */
 .img-card {
     position: relative;
-    border-radius: 6px;
+    border-radius: 12px;
     overflow: hidden;
-    border: 1px solid var(--border-color);
+    background: #111;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s;
+}
+
+.img-card:hover {
+    border-color: var(--accent-gold);
+    transform: scale(1.02);
 }
 
 .img-card img {
     width: 100%;
-    height: 150px;
+    height: 180px;
     object-fit: cover;
     display: block;
 }
@@ -205,7 +35,7 @@ select.form-control option {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: red;
+    background: #ff4c4c;
     color: white;
     border: none;
     width: 30px;
@@ -213,58 +43,46 @@ select.form-control option {
     border-radius: 50%;
     cursor: pointer;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 2;
 }
 
-.list-group {
-    list-style: none;
-    margin-top: 20px;
-}
-
+/* Category & Offer List Items */
 .list-item {
-    background: var(--card-bg);
-    padding: 15px;
-    border: 1px solid var(--border-color);
+    padding: 15px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
     margin-bottom: 10px;
-    border-radius: 6px;
+    border-radius: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-/* Toast Notification */
-.toast {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: var(--accent-gold);
-    color: black;
-    padding: 15px 25px;
-    border-radius: 4px;
-    font-weight: bold;
-    transform: translateX(200%);
-    transition: 0.3s;
-    z-index: 1000;
-}
-
-.toast.show {
-    transform: translateX(0);
-}
-
-.toast.error {
-    background: #ff4c4c;
-    color: white;
-}
-
-.upload-area {
-    border: 2px dashed var(--border-color);
-    padding: 40px;
-    text-align: center;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 20px;
-}
-
-.upload-area:hover {
-    border-color: var(--accent-gold);
     background: rgba(255, 255, 255, 0.02);
+    transition: all 0.3s;
+}
+
+.list-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent-gold);
+}
+
+/* Media Item Badges */
+.category-badge {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--accent-gold);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    z-index: 1;
+}
+
+/* Custom Letter Spacing */
+.letter-spacing-2 {
+    letter-spacing: 2px;
 }

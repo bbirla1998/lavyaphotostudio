@@ -5,59 +5,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery | Lavya Photo Studio</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        .page-header {
-            padding: 150px 0 60px;
-            text-align: center;
-            background: linear-gradient(to bottom, var(--bg-color), var(--card-bg));
-            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-        }
-
-        .filter-btns {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
-
         .filter-btn {
             background: transparent;
             color: var(--text-main);
             border: 1px solid var(--accent-gold);
-            padding: 8px 20px;
-            border-radius: 20px;
+            padding: 8px 25px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all var(--transition-speed);
+            font-weight: 500;
         }
 
         .filter-btn:hover,
         .filter-btn.active {
             background: var(--accent-gold);
             color: var(--bg-color);
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            padding-bottom: 80px;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
         }
 
         .gallery-item {
             position: relative;
             overflow: hidden;
-            border-radius: 8px;
+            border-radius: 12px;
             aspect-ratio: 1;
             cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s ease;
         }
 
-        .gallery-item img {
+        .gallery-item img, .gallery-item video {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+            border-color: var(--accent-gold);
         }
 
         .gallery-item:hover img {
@@ -70,7 +60,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(5, 5, 5, 0.6);
+            background: rgba(0, 0, 0, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -89,11 +79,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 2000;
             display: none;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(10px);
         }
 
         .lightbox.active {
@@ -103,189 +94,60 @@
         .lightbox img,
         .lightbox video {
             max-width: 90%;
-            max-height: 90vh;
+            max-height: 80vh;
             border: 2px solid var(--accent-gold);
+            border-radius: 8px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
 
         .close-lightbox {
             position: absolute;
-            top: 20px;
-            right: 30px;
+            top: 40px;
+            right: 40px;
             color: white;
-            font-size: 2rem;
+            font-size: 3rem;
             cursor: pointer;
+            line-height: 1;
         }
     </style>
 </head>
 
 <body>
 
-    <nav class="navbar">
-        <a href="/" class="nav-brand studio-name-display">Lavya Studio</a>
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/services.html">Services</a></li>
-            <li><a href="/gallery.html" class="active">Gallery</a></li>
-            <li><a href="/offers.html">Offers</a></li>
-            <li><a href="/about.html">About</a></li>
-            <li><a href="/contact.html">Contact</a></li>
-            <li><a href="/admin.html" title="Admin Portal" style="display:flex; align-items:center;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" style="margin-top:-2px;">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
-                        </path>
-                        <circle cx="12" cy="13" r="4"></circle>
-                    </svg>
-                </a></li>
-        </ul>
-    </nav>
+    <div id="navbar-placeholder"></div>
 
     <header class="page-header">
         <div class="container">
-            <h1 style="font-size: 3rem;">Our <span class="gold-text">Portfolio</span></h1>
-            <p class="text-muted">Explore our latest captured moments.</p>
+            <h1 class="display-3 fw-bold">Our <span class="gold-text">Portfolio</span></h1>
+            <p class="text-muted lead">Explore our latest captured moments and stories.</p>
         </div>
     </header>
 
-    <section class="container">
-        <div class="filter-btns" id="dynamicFilterBtns">
+    <section class="section py-5">
+        <div class="container">
+        <div class="d-flex flex-wrap justify-content-center gap-3 mb-5" id="dynamicFilterBtns">
             <button class="filter-btn active" data-filter="all">All</button>
             <!-- Dynamically populated from API -->
         </div>
 
-        <div class="gallery-grid" id="gallery-container">
+        <div class="row g-4" id="gallery-container">
             <!-- Dynamically populated -->
+        </div>
         </div>
     </section>
 
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox">
         <span class="close-lightbox" id="close-lightbox">&times;</span>
-        <div id="lightbox-container"
-            style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;"></div>
+        <div id="lightbox-container" class="container d-flex justify-content-center align-items-center h-100 w-100">
+        </div>
     </div>
 
-    <!-- Minimal Footer -->
-    <footer style="padding: 20px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
-        &copy; <span id="year"></span> <span class="studio-name-display"></span>
-    </footer>
+    <div id="footer-placeholder"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/components.js"></script>
     <script src="/js/main.js"></script>
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        let allImages = {};
-
-        async function loadGallery() {
-            try {
-                // Fetch categories to build filter buttons
-                const catRes = await fetch('/api/data/categories');
-                const categories = await catRes.json();
-
-                const filterContainer = document.getElementById('dynamicFilterBtns');
-                if (categories && categories.length > 0) {
-                    categories.forEach(cat => {
-                        const btn = document.createElement('button');
-                        btn.className = 'filter-btn';
-                        btn.dataset.filter = cat.id;
-                        btn.textContent = cat.label;
-                        filterContainer.appendChild(btn);
-                    });
-                }
-
-                // Attach filtering logic to all buttons including new ones
-                document.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                        e.target.classList.add('active');
-                        renderImages(e.target.dataset.filter);
-                    });
-                });
-
-                // Fetch images
-                const res = await fetch('/api/upload/gallery');
-                allImages = await res.json();
-                renderImages('all');
-            } catch (err) {
-                console.error("Error loading gallery:", err);
-            }
-        }
-
-        function renderImages(category) {
-            const container = document.getElementById('gallery-container');
-            container.innerHTML = '';
-
-            let imagesToRender = [];
-            if (category === 'all') {
-                imagesToRender = allImages.all || [];
-            } else {
-                imagesToRender = allImages[category] || [];
-            }
-
-            if (imagesToRender.length === 0) {
-                container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">No images found in this category.</p>';
-                return;
-            }
-
-            imagesToRender.forEach(url => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-
-                const isVideo = url.match(/\.(mp4|webm|ogg)$/i);
-                const mediaTag = isVideo
-                    ? `<video src="${url}" muted loop style="width:100%; height:100%; object-fit:cover;"></video>`
-                    : `<img src="${url}" alt="Gallery Image" loading="lazy">`;
-
-                item.innerHTML = `
-                    ${mediaTag}
-                    <div class="gallery-overlay">
-                        <span style="color:white; font-size:1.5rem;">${isVideo ? '&#x25B6;' : '&#x1F50D;'}</span>
-                    </div>
-                `;
-
-                if (isVideo) {
-                    const video = item.querySelector('video');
-                    item.addEventListener('mouseenter', () => video.play());
-                    item.addEventListener('mouseleave', () => video.pause());
-                }
-
-                item.addEventListener('click', () => openLightbox(url, isVideo));
-                container.appendChild(item);
-            });
-        }
-
-        // Filtering logic is now handled inside loadGallery() AFTER buttons load
-
-        // Lightbox
-        const lightbox = document.getElementById('lightbox');
-        const lightboxContainer = document.getElementById('lightbox-container');
-
-        function openLightbox(url, isVideo) {
-            lightboxContainer.innerHTML = isVideo
-                ? `<video src="${url}" controls autoplay></video>`
-                : `<img src="${url}" alt="Enlarged gallery image">`;
-            lightbox.classList.add('active');
-        }
-
-        document.getElementById('close-lightbox').addEventListener('click', () => {
-            lightbox.classList.remove('active');
-            lightboxContainer.innerHTML = '';
-        });
-
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox || e.target === lightboxContainer) {
-                lightbox.classList.remove('active');
-                lightboxContainer.innerHTML = '';
-            }
-        });
-
-        loadGallery();
-    </script>
 </body>
 
 </html>
