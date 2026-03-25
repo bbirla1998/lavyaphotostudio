@@ -32,6 +32,12 @@ app.use('/api/upload', uploadRoutes);
 
 // Static files (must be AFTER API routes so APIs resolve first)
 app.use(express.static(path.join(__dirname, 'public')));
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+
+// Export for Vercel
+module.exports = app;
+
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}
