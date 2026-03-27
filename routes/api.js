@@ -36,6 +36,11 @@ const writeJsonFile = (filePath, data) => {
 
 // --- Public Routes ---
 
+// Keep-alive ping endpoint
+router.get('/ping', (req, res) => {
+    res.json({ status: 'alive', timestamp: new Date().toISOString() });
+});
+
 // Get current offers
 router.get('/offers', (req, res) => {
     const data = readJsonFile(OFFERS_FILE) || [];
