@@ -161,9 +161,12 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             let res;
             if (url.startsWith('/uploads/')) {
-                // It's a local file
-                const filename = url.split('/').pop();
-                res = await fetch(`/api/upload/gallery/${category}/${filename}`, { method: 'DELETE' });
+                // It's a local file — extract real category from URL path
+                // URL format: /uploads/gallery/CATEGORY/filename.jpg
+                const parts = url.split('/');
+                const actualCategory = parts[3]; // index 3 = category folder name
+                const filename = parts[4];        // index 4 = filename
+                res = await fetch(`/api/upload/gallery/${actualCategory}/${filename}`, { method: 'DELETE' });
             } else {
                 // It's an external link
                 res = await fetch(`/api/upload/external-link?url=${encodeURIComponent(url)}&category=${category}`, { method: 'DELETE' });

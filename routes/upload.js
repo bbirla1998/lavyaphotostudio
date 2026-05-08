@@ -151,14 +151,21 @@ router.delete('/gallery/:category/:filename', isAuthenticated, (req, res) => {
     const { category, filename } = req.params;
     const filePath = path.join(__dirname, '..', 'public', 'uploads', 'gallery', category, filename);
 
+    console.log(`[DELETE] category=${category}, filename=${filename}`);
+    console.log(`[DELETE] filePath=${filePath}`);
+    console.log(`[DELETE] fileExists=${fs.existsSync(filePath)}`);
+
     try {
         if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
+            console.log(`[DELETE] SUCCESS - file deleted`);
             res.json({ success: true, message: 'Image deleted' });
         } else {
+            console.log(`[DELETE] FAILED - file not found at path`);
             res.status(404).json({ error: 'File not found' });
         }
     } catch (err) {
+        console.log(`[DELETE] ERROR - ${err.message}`);
         res.status(500).json({ error: 'Error deleting file' });
     }
 });
